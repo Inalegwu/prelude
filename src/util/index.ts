@@ -1,5 +1,6 @@
 /**
  *
+ * @module
  * Exports functions usable in all contexts
  *
  */
