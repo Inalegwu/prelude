@@ -5,7 +5,8 @@
 	"exports": {
 		".": "./src/index.ts",
 		"./mobile": "./src/mobile/index.ts",
-		"./react": "./src/web/react"
+		"./react": "./src/web/react.ts",
+		"./web": "./src/web/index.ts"
 	},
 	"tasks": {
 		"dev": "deno run --watch src/main.ts"
