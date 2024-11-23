@@ -1,10 +1,14 @@
 // deno-lint-ignore-file no-namespace
 
 export namespace Hash {
-	export const randomXDigitHash = (length = 4) =>
+	export const randomXDigitHash = (length = 4): string =>
 		Math.random().toString(16).split(".")[1]?.substring(0, length);
 
-	export const randomuuid = (prefix?: string, separator = "_", length = 7) =>
+	export const randomuuid = (
+		prefix?: string,
+		separator = "_",
+		length = 7,
+	): string =>
 		prefix
 			? `${prefix}${separator}${new Array(3)
 					.fill(0)

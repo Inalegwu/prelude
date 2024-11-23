@@ -1,6 +1,7 @@
 {
 	"name": "@disgruntleddevs/prelude",
 	"version": "1.0.0",
+	"license": "MIT",
 	"exports": {
 		".": "./src/index.ts",
 		"./mobile": "./src/mobile/index.ts"
