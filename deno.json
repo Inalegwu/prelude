@@ -1,0 +1,14 @@
+{
+	"name": "@disgruntleddevs/prelude",
+	"version": "1.0.0",
+	"exports": {
+		".": "./src/index.ts",
+		"./mobile": "./src/mobile/index.ts"
+	},
+	"tasks": {
+		"dev": "deno run --watch src/main.ts"
+	},
+	"imports": {
+		"@std/assert": "jsr:@std/assert@1"
+	}
+}
