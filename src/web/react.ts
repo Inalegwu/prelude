@@ -41,7 +41,7 @@ import { Util } from "../index.ts";
 export function useDebounce<A = unknown[], R = void>(
 	fn: (args: A) => R,
 	ms: number,
-) {
+): Promise<R> {
 	const [debounceFn, tearDown] = useMemo(
 		() => Util.debounce<A, R>(fn, ms),
 		[fn, ms],
@@ -88,7 +88,8 @@ export function useDebounce<A = unknown[], R = void>(
 export function useThrottle<A = unknown[], R = void>(
 	fn: (args: A) => R,
 	ms: number,
-) {
+	// biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
+): () => void | R {
 	const [throttleFn, tearDown] = useMemo(() => Util.throttle(fn, ms), [fn, ms]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
