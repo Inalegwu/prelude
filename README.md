@@ -37,3 +37,17 @@ const uid=Hash.randomuuid();
 
 console.log(uid);
 ```
+
+
+
+# Contributing
+
+Contributions are welcome!
+Feel free to fork the repository and submit a pull request.
+
+
+# License
+This project is licensed under the MIT License.
+
+
+Feel free to tweak it further to align with your vision for the project!
