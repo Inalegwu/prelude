@@ -42,7 +42,7 @@ export namespace Util {
 		fn: (args: A) => R,
 		ms: number,
 	): [(args: A) => Promise<R>, () => void] {
-		let t: number;
+		let t: ReturnType<typeof setTimeout> | undefined = undefined;
 
 		const debounceFn = (args: A): Promise<R> =>
 			new Promise((resolve) => {
@@ -56,5 +56,63 @@ export namespace Util {
 		const teardown = () => clearTimeout(t);
 
 		return [debounceFn, teardown];
+	}
+
+	/**
+	 * Creates a throttled version of the provided function. The throttled function ensures
+	 * the original function is only executed at most once within the specified interval.
+	 *
+	 * @template A - The arguments type of the input function.
+	 * @template R - The return type of the input function.
+	 *
+	 * @param {(...args: A) => R} fn - The function to throttle.
+	 * @param {number} interval - The time interval in milliseconds to enforce throttling.
+	 *
+	 * @returns {[(...args: A) => R | void, () => void]} A tuple containing:
+	 *   - A throttled version of the input function.
+	 *   - A teardown function to clear the throttle timeout manually.
+	 *
+	 * @example
+	 * const [throttledFn, cancel] = throttle((message: string) => console.log(message), 1000);
+	 * throttledFn("Hello"); // Executes immediately
+	 * throttledFn("World"); // Ignored if called within 1 second of the last call
+	 */
+	export function throttle<A extends unknown[], R>(
+		fn: (...args: A) => R,
+		interval: number,
+		// biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
+	): [(...args: A) => R | void, () => void] {
+		let lastCallTime = 0;
+		let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+		// biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
+		const throttledFn = (...args: A): R | void => {
+			const now = Date.now();
+
+			if (now - lastCallTime >= interval) {
+				lastCallTime = now;
+				return fn(...args);
+			}
+
+			if (!timeoutId) {
+				timeoutId = setTimeout(
+					() => {
+						lastCallTime = Date.now();
+						timeoutId = null;
+						fn(...args);
+					},
+					interval - (now - lastCallTime),
+				);
+			}
+		};
+
+		const teardown = () => {
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+				timeoutId = null;
+			}
+		};
+
+		return [throttledFn, teardown];
 	}
 }
